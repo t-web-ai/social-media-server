@@ -41,6 +41,7 @@ export const getPosts = async (page = 1, limit = DEFAULT_LIMIT, userId) => {
         },
         comments: {
           include: { user: { select: { username: true, email: true } } },
+          orderBy: { createdAt: "desc" },
         },
       },
     }),
@@ -76,6 +77,7 @@ export const getPostById = async (postId, userId) => {
       },
       comments: {
         include: { user: { select: { username: true, email: true } } },
+        orderBy: { createdAt: "desc" },
       },
     },
   });
