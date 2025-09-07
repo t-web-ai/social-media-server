@@ -16,7 +16,12 @@ export const createNewPost = async ({ content, imageUrl, userId }) => {
 const DEFAULT_LIMIT = parseInt(process.env.DEFAULT_PAGE_LIMIT, 10) || 10;
 const MAX_LIMIT = parseInt(process.env.MAX_PAGE_LIMIT, 10) || 50;
 
-export const getPosts = async (page = 1, limit = DEFAULT_LIMIT, userId) => {
+export const getPosts = async (
+  page = 1,
+  limit = DEFAULT_LIMIT,
+  userId,
+  keyword
+) => {
   const safePage = Math.ceil(Math.max(Number(page) || 1, 1));
   const safeLimit = Math.ceil(
     Math.min(Math.max(Number(limit) || DEFAULT_LIMIT, 1), MAX_LIMIT)
@@ -24,6 +29,9 @@ export const getPosts = async (page = 1, limit = DEFAULT_LIMIT, userId) => {
 
   const [posts, total] = await Promise.all([
     prisma.post.findMany({
+      where: {
+        content: keyword ? { contains: keyword } : undefined,
+      },
       skip: (safePage - 1) * safeLimit,
       take: safeLimit,
       orderBy: { createdAt: "desc" },
@@ -45,7 +53,9 @@ export const getPosts = async (page = 1, limit = DEFAULT_LIMIT, userId) => {
         },
       },
     }),
-    prisma.post.count(),
+    prisma.post.count({
+      where: { content: keyword ? { contains: keyword } : undefined },
+    }),
   ]);
 
   // ✅ Shape data cleanly
@@ -53,6 +63,7 @@ export const getPosts = async (page = 1, limit = DEFAULT_LIMIT, userId) => {
 
   return {
     data,
+    dataSize: data.length,
     page: safePage,
     limit: safeLimit,
     total,

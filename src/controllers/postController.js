@@ -45,3 +45,13 @@ export const deletePost = async (req, res, next) => {
     next(error);
   }
 };
+
+export const search = async (req, res, next) => {
+  const { page, limit, keyword } = req.query;
+  try {
+    const posts = await getPosts(page, limit, req.user.id, keyword);
+    res.send(posts);
+  } catch (error) {
+    next(error);
+  }
+};

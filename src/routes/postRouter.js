@@ -6,6 +6,7 @@ import {
   deletePost,
   post,
   posts,
+  search,
 } from "../controllers/postController.js";
 import upload from "../middlewares/uploadFile.js";
 import { uploadImage } from "../middlewares/uploadImage.js";
@@ -19,6 +20,7 @@ router.post(
 );
 
 router.get("/", posts);
+router.get("/search", search);
 router.get("/:id", post);
 router.delete("/:id", ownPost, deletePost);
 
