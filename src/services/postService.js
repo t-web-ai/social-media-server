@@ -58,3 +58,27 @@ export const getPosts = async (page = 1, limit = DEFAULT_LIMIT, userId) => {
     totalPages: Math.ceil(total / safeLimit),
   };
 };
+
+export const getPostById = async (postId, userId) => {
+  const post = await prisma.post.findUnique({
+    where: { id: postId },
+    include: {
+      user: { select: { id: true, username: true } },
+      likes: {
+        include: {
+          user: {
+            select: {
+              id: true,
+              username: true,
+            },
+          },
+        },
+      },
+      comments: {
+        include: { user: { select: { username: true, email: true } } },
+      },
+    },
+  });
+  if (!post) throw { statusCode: 404, message: "No posts" };
+  return shapePost(post, userId);
+};

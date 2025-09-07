@@ -1,4 +1,8 @@
-import { createNewPost, getPosts } from "../services/postService.js";
+import {
+  createNewPost,
+  getPostById,
+  getPosts,
+} from "../services/postService.js";
 export const createPost = async (req, res, next) => {
   try {
     const content = req.body.content;
@@ -16,6 +20,16 @@ export const posts = async (req, res, next) => {
   try {
     const posts = await getPosts(page, limit, req.user.id);
     res.status(200).json(posts);
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const post = async (req, res, next) => {
+  const { id: postId } = req.params;
+  try {
+    const post = await getPostById(postId, req.user.id);
+    res.status(200).json(post);
   } catch (error) {
     next(error);
   }
