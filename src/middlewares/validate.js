@@ -5,7 +5,7 @@ const validate = (scheme) => {
       stripUnknown: true,
     });
     if (error)
-      res.status(400).json({
+      return res.status(400).json({
         errors: error.details.map((err) => {
           return {
             message: err.message,
