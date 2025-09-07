@@ -1,5 +1,6 @@
 import {
   createNewPost,
+  deletePostById,
   getPostById,
   getPosts,
 } from "../services/postService.js";
@@ -30,6 +31,16 @@ export const post = async (req, res, next) => {
   try {
     const post = await getPostById(postId, req.user.id);
     res.status(200).json(post);
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const deletePost = async (req, res, next) => {
+  const { id: postId } = req.params;
+  try {
+    const deleted = await deletePostById(postId);
+    res.status(200).json(deleted);
   } catch (error) {
     next(error);
   }

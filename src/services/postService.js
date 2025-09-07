@@ -79,6 +79,23 @@ export const getPostById = async (postId, userId) => {
       },
     },
   });
-  if (!post) throw { statusCode: 404, message: "No posts" };
+  if (!post) throw { statusCode: 404, message: "Post not found" };
   return shapePost(post, userId);
+};
+
+export const deletePostById = async (postId) => {
+  const post = await prisma.post.findUnique({
+    where: { id: postId },
+  });
+
+  if (!post) {
+    throw { statusCode: 404, message: "Post not found" };
+  }
+
+  const deleted = await prisma.post.delete({ where: { id: postId } });
+  return {
+    success: true,
+    message: "Post deleted successfully",
+    postId: postId,
+  };
 };
