@@ -1,4 +1,4 @@
-import { createNewPost } from "../services/postService.js";
+import { createNewPost, getPosts } from "../services/postService.js";
 export const createPost = async (req, res, next) => {
   try {
     const content = req.body.content;
@@ -6,6 +6,16 @@ export const createPost = async (req, res, next) => {
     const userId = req.user.id;
     const post = await createNewPost({ content, imageUrl, userId });
     res.status(200).json(post);
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const posts = async (req, res, next) => {
+  const { page, limit } = req.query;
+  try {
+    const posts = await getPosts(page, limit, req.user.id);
+    res.status(200).json(posts);
   } catch (error) {
     next(error);
   }
