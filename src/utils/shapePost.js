@@ -8,9 +8,10 @@ export const shapePost = (post, userId) => {
     likes: post.likes.map((like) => like.user),
     comments: post.comments.map((comment) => {
       return {
-        commentId: comment.id,
-        userId: comment.user,
+        userId: comment.userId,
+        user: comment.user,
         comment: comment.comment,
+        createdAt: comment.createdAt,
       };
     }),
     likeCount: post.likes.length,
