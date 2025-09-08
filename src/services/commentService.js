@@ -10,3 +10,37 @@ export const createComment = async (postId, userId, comment) => {
 
   return { success: true, data };
 };
+
+const DEFAULT_LIMIT = parseInt(process.env.DEFAULT_PAGE_LIMIT, 10) || 10;
+const MAX_LIMIT = parseInt(process.env.MAX_PAGE_LIMIT, 10) || 50;
+
+export const getComments = async (page = 1, limit = DEFAULT_LIMIT, postId) => {
+  const safePage = Math.ceil(Math.max(Number(page) || 1, 1));
+  const safeLimit = Math.ceil(
+    Math.min(Math.max(Number(limit) || DEFAULT_LIMIT, 1), MAX_LIMIT)
+  );
+
+  const post = await prisma.post.findUnique({ where: { id: postId } });
+  if (!post) throw { statusCode: 404, message: "Post not found" };
+
+  const [comments, count] = await Promise.all([
+    prisma.comment.findMany({
+      where: { postId },
+      skip: (safePage - 1) * safeLimit,
+      take: safeLimit,
+      orderBy: { createdAt: "desc" },
+      include: { user: { select: { id: true, username: true } } },
+    }),
+    prisma.comment.count({ where: { postId } }),
+  ]);
+
+  return {
+    postId,
+    comments,
+    commentSize: comments.length,
+    page: safePage,
+    limit: safeLimit,
+    total: count,
+    totalPages: Math.ceil(count / safeLimit),
+  };
+};

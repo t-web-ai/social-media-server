@@ -1,4 +1,4 @@
-import { createComment } from "../services/commentService.js";
+import { createComment, getComments } from "../services/commentService.js";
 
 export const addComment = async (req, res, next) => {
   const { id: postId } = req.params;
@@ -7,6 +7,17 @@ export const addComment = async (req, res, next) => {
   try {
     const response = await createComment(postId, userId, comment);
     res.status(200).json(response);
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const comments = async (req, res, next) => {
+  const { id: postId } = req.params;
+  const { page, limit } = req.query;
+  try {
+    const comment = await getComments(page, limit, postId);
+    res.send(comment);
   } catch (error) {
     next(error);
   }
