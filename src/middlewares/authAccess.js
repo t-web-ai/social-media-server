@@ -2,7 +2,7 @@ import { verifyAccessToken } from "../utils/jwt.js";
 
 const authAccess = async (req, res, next) => {
   try {
-    const accessToken = req.headers["authorization"];
+    const accessToken = req.headers["authorization"].split(" ")[1];
     if (!accessToken) {
       const error = new Error("No token is provided");
       error.statusCode = 401;
