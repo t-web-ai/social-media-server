@@ -58,7 +58,6 @@ export const getPosts = async (
     }),
   ]);
 
-  // ✅ Shape data cleanly
   const data = posts.map((post) => shapePost(post, userId));
 
   return {

@@ -57,3 +57,12 @@ export const updateCommentById = async (commentId, commentText) => {
 
   return { updated: true, data: update };
 };
+
+export const deleteCommentById = async (commentId) => {
+  const deleted = await prisma.comment.delete({ where: { id: commentId } });
+  return {
+    success: true,
+    message: "Comment deleted successfully",
+    commentId,
+  };
+};
