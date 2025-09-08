@@ -106,7 +106,7 @@ https://imagekit.io/
 #### Add comment to post
 
 ```text
-   POST /posts//:id/comment
+   POST /posts/:id/comment
 ```
 
 | Parameter | Type                     |
