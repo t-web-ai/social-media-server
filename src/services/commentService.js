@@ -44,3 +44,16 @@ export const getComments = async (page = 1, limit = DEFAULT_LIMIT, postId) => {
     totalPages: Math.ceil(count / safeLimit),
   };
 };
+
+export const updateCommentById = async (commentId, commentText) => {
+  const comment = await prisma.comment.findUnique({ where: { id: commentId } });
+  if (comment.comment == commentText)
+    return { updated: false, message: "No changes" };
+
+  const update = await prisma.comment.update({
+    where: { id: commentId },
+    data: { comment: commentText },
+  });
+
+  return { updated: true, data: update };
+};
