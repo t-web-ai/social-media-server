@@ -73,6 +73,12 @@ https://imagekit.io/
    GET /posts?page={number}&limit={number}
 ```
 
+### Search posts with keyword
+
+```text
+   GET /posts/search?keyword={string}&page={number}&limit={number}
+```
+
 #### Retrieve a single post by ID
 
 ```text
@@ -131,7 +137,7 @@ https://imagekit.io/
 
 ## Tech Stack
 
-`@prisma/client` `bcrypt` `cookie-parser` `dotenv` `express`, `imagekit` `joi`
+`@prisma/client` `bcrypt` `cookie-parser` `dotenv` `express` `imagekit` `joi`
 `jsonwebtoken` `multer` `mysql2` `prisma`
 
 ## Run Locally
