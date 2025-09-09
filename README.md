@@ -160,6 +160,12 @@ Install dependencies
   npm install
 ```
 
+Migrate database
+
+```bash
+  npx prisma migrate dev
+```
+
 Start the server
 
 ```bash
