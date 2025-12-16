@@ -13,8 +13,9 @@ export const login = async (req, res, next) => {
   try {
     const { accessToken, refreshToken } = await loginUser(req.body);
     res.cookie("token", refreshToken, {
-      httpOnly: true,
+      httpOnly: false,
       secure: true,
+      sameSite: "none",
       maxAge: 1000 * 60 * 60 * 24 * 7,
     });
     res.status(200).json({ accessToken });
