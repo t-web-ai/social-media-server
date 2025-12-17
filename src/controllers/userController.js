@@ -18,7 +18,7 @@ export const login = async (req, res, next) => {
       sameSite: "none",
       maxAge: 1000 * 60 * 60 * 24 * 7,
     });
-    res.status(200).json({ accessToken });
+    res.status(200).json({ accessToken, refreshToken });
   } catch (error) {
     next(error);
   }
