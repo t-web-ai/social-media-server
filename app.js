@@ -15,6 +15,9 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 
+app.get("/", (req, res) => {
+  res.json({ message: "Server is working..." });
+});
 app.use("/auth", userRouter);
 app.use("/users", profileRouter);
 app.use("/posts", authAccess, postRouter);

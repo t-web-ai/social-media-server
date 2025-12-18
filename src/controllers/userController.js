@@ -18,7 +18,20 @@ export const login = async (req, res, next) => {
       sameSite: "none",
       maxAge: 1000 * 60 * 60 * 24 * 7,
     });
-    res.status(200).json({ accessToken, refreshToken });
+    res.status(200).json({ accessToken });
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const logout = async (req, res, next) => {
+  try {
+    res.clearCookie("token", {
+      httpOnly: false,
+      secure: true,
+      sameSite: "none",
+    });
+    res.status(200).json({ message: "Logged out successfully" });
   } catch (error) {
     next(error);
   }

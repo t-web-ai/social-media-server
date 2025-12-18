@@ -44,6 +44,12 @@ https://imagekit.io/
 | `email`    | `string` |
 | `password` | `string` |
 
+#### Log out account
+
+```text
+   POST /auth/logout
+```
+
 #### Profile
 
 ```text
